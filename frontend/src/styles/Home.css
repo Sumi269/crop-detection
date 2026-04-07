@@ -1,0 +1,42 @@
+.home-hero {
+  height: 90vh;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay {
+  background: rgba(0,0,0,0.6);
+  padding: 40px;
+  text-align: center;
+  color: white;
+}
+
+.buttons button {
+  margin: 10px;
+  padding: 12px 20px;
+  border: none;
+  background: green;
+  color: white;
+  cursor: pointer;
+}
+
+.secondary {
+  background: white;
+  color: black;
+}
+
+.features {
+  display: flex;
+  justify-content: space-around;
+  padding: 40px;
+}
+
+.feature-card {
+  padding: 20px;
+  background: #f4f4f4;
+  border-radius: 10px;
+  width: 200px;
+  text-align: center;
+}
