@@ -1,58 +1,32 @@
-import React, { useState } from "react";
-import axios from "axios";
-import WeatherCard from "../components/WeatherCard";
-
-export default function Weather() {
-  const [city, setCity] = useState("");
-  const [weatherData, setWeatherData] = useState(null);
-
-  const API_KEY = "YOUR_API_KEY"; // put your key here
-
-  const fetchWeather = async () => {
-    try {
-      const res = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
-      );
-
-      // Format data for your WeatherCard
-      const formatted = {
-        temp: res.data.main.temp,
-        humidity: res.data.main.humidity,
-        rain: res.data.weather[0].description,
-        alert:
-          res.data.weather[0].main === "Rain"
-            ? "Carry umbrella 🌧"
-            : "Weather looks clear ☀",
-      };
-
-      setWeatherData(formatted);
-    } catch (err) {
-      alert("City not found ❌");
-    }
-  };
+export default function WeatherCard({ data }) {
+  if (!data) return null;
 
   return (
-    <div className="p-6">
-      <h1 className="text-xl font-bold mb-4">Check Weather</h1>
+    <div className="p-5 rounded-2xl shadow-lg bg-green-50 border border-green-200">
+      <h2 className="text-xl font-bold text-green-700 mb-3">
+        🌦️ Crop Weather Insights
+      </h2>
 
-      <input
-        type="text"
-        placeholder="Enter city"
-        className="border p-2 mr-2"
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
-      />
-
-      <button
-        onClick={fetchWeather}
-        className="bg-blue-500 text-white px-4 py-2 rounded"
-      >
-        Search
-      </button>
-
-      <div className="mt-5">
-        <WeatherCard data={weatherData} />
+      <div className="space-y-1 text-gray-700">
+        <p>🌡 Temperature: <b>{data.temp}°C</b></p>
+        <p>💧 Humidity: <b>{data.humidity}%</b></p>
+        <p>🌧 Rainfall: <b>{data.rain} mm</b></p>
+        <p>🌬 Wind Speed: <b>{data.wind} km/h</b></p>
       </div>
+
+      {/* Crop Alert */}
+      {data.alert && (
+        <div className="mt-3 p-2 bg-red-100 text-red-600 rounded">
+          ⚠️ {data.alert}
+        </div>
+      )}
+
+      {/* Farming Suggestion */}
+      {data.advice && (
+        <div className="mt-3 p-2 bg-green-100 text-green-700 rounded">
+          🌱 {data.advice}
+        </div>
+      )}
     </div>
   );
 }
