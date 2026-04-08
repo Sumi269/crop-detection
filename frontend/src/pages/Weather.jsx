@@ -5,7 +5,7 @@ export default function Weather() {
   const [city, setCity] = useState("");
   const [data, setData] = useState(null);
 
-  const API_KEY = "YOUR_API_KEY"; // put your API key
+  const API_KEY = "b9f3d655ab397f16afcdce8b0e4e2d9e"; // put your API key
 
   const fetchWeather = async () => {
     try {
