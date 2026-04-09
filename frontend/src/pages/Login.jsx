@@ -12,26 +12,14 @@ export default function Login() {
 
   const handleLogin = async () => {
     try {
-      const res = await fetch("http://localhost:3000/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+        const dummyUser = { email: form.email || "user@example.com", name: "Demo User" };
+        localStorage.setItem("token", "dummy-token-123");
+        localStorage.setItem("user", JSON.stringify(dummyUser));
 
-      const data = await res.json();
-
-      if (data.token) {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
-
-        setUser(data.user);
+        setUser(dummyUser);
 
         // ✅ CORRECT REDIRECT
         navigate("/home");
-      } else {
-        alert("User not found. Please signup.");
-        navigate("/signup");
-      }
     } catch (err) {
       console.error(err);
       alert("Login failed");

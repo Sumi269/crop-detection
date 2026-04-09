@@ -11,25 +11,13 @@ export default function Signup() {
   const [form, setForm] = useState({});
 
   const handleSignup = async () => {
-    await fetch("http://localhost:3000/signup", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(form),
-    });
-
     // auto login
-    const res = await fetch("http://localhost:5000/login", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(form),
-    });
+    const dummyUser = { email: form.email || "user@example.com", name: form.name || "Demo User" };
 
-    const data = await res.json();
+    localStorage.setItem("token", "dummy-token-123");
+    localStorage.setItem("user", JSON.stringify(dummyUser));
 
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("user", JSON.stringify(data.user));
-
-    setUser(data.user);
+    setUser(dummyUser);
 
     navigate("/home");
   };
