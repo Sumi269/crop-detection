@@ -9,21 +9,40 @@ export default function Login() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({});
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
+    setError("");
+    setLoading(true);
     try {
-        const dummyUser = { email: form.email || "user@example.com", name: "Demo User" };
-        localStorage.setItem("token", "dummy-token-123");
-        localStorage.setItem("user", JSON.stringify(dummyUser));
+      const res = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
 
-        setUser(dummyUser);
+      const data = await res.json();
 
-        // ✅ CORRECT REDIRECT
-        navigate("/home");
+      if (!res.ok) {
+        setError(data.error || "Login failed");
+        setLoading(false);
+        return;
+      }
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      setUser(data.user);
+
+      // ✅ CORRECT REDIRECT
+      navigate("/home");
+      
     } catch (err) {
       console.error(err);
-      alert("Login failed");
+      setError("Network error connecting to backend");
     }
+    setLoading(false);
   };
 
   return (
@@ -39,9 +58,11 @@ export default function Login() {
         <div className="auth-box">
           <h2>Login</h2>
 
+          {error && <div style={{color: "red", fontSize: "14px", marginBottom: "10px"}}>{error}</div>}
+
           <input
-            placeholder="Email"
-            onChange={(e)=>setForm({...form,email:e.target.value})}
+            placeholder="Email or Mobile"
+            onChange={(e)=>setForm({...form,loginId:e.target.value})}
           />
 
           <input

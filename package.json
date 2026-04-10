@@ -1,0 +1,23 @@
+{
+  "name": "crop-detection",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"cd frontend && npm start\" \"cd backend && node server.js\" \"cd ai_service && python app.py\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sumi269/crop-detection.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sumi269/crop-detection/issues"
+  },
+  "homepage": "https://github.com/Sumi269/crop-detection#readme",
+  "description": "",
+  "dependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

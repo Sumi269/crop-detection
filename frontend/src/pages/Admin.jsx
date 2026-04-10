@@ -6,7 +6,9 @@ export default function Admin() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/history")
+    fetch("http://localhost:5000/api/admin/detections", {
+        headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
+    })
       .then(res => res.json())
       .then(data => {
         setHistory(data);

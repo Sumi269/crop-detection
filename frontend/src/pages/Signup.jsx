@@ -9,17 +9,36 @@ export default function Signup() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({});
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSignup = async () => {
-    // auto login
-    const dummyUser = { email: form.email || "user@example.com", name: form.name || "Demo User" };
+    setError("");
+    setLoading(true);
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/signup", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(form),
+      });
 
-    localStorage.setItem("token", "dummy-token-123");
-    localStorage.setItem("user", JSON.stringify(dummyUser));
+      const data = await res.json();
+      
+      if (!res.ok) {
+        setError(data.error || "Signup failed");
+        setLoading(false);
+        return;
+      }
 
-    setUser(dummyUser);
-
-    navigate("/home");
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      setUser(data.user);
+      navigate("/home");
+      
+    } catch (err) {
+      setError("Network error connecting to Backend.");
+    }
+    setLoading(false);
   };
 
   return (
@@ -32,8 +51,11 @@ export default function Signup() {
         <div className="auth-box">
           <h2>Signup</h2>
 
+          {error && <div style={{color: "red", fontSize: "14px", marginBottom: "10px"}}>{error}</div>}
+
           <input placeholder="Name" onChange={(e)=>setForm({...form,name:e.target.value})}/>
-          <input placeholder="Email" onChange={(e)=>setForm({...form,email:e.target.value})}/>
+          <input placeholder="Email (Optional)" onChange={(e)=>setForm({...form,email:e.target.value})}/>
+          <input placeholder="Mobile e.g. +91... (Optional)" onChange={(e)=>setForm({...form,mobile:e.target.value})}/>
           <input type="password" placeholder="Password" onChange={(e)=>setForm({...form,password:e.target.value})}/>
 
           <button onClick={handleSignup}>Signup</button>
